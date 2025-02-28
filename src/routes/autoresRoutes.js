@@ -1,5 +1,4 @@
 import express from 'express';
-import knex from 'knex';
 import AutoresController from '../controllers/autoresController.js';
 
 const router = express.Router();

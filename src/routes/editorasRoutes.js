@@ -1,5 +1,4 @@
 import express from 'express';
-import knex from 'knex';
 import EditorasController from '../controllers/editorasController.js';
 
 const router = express.Router();
