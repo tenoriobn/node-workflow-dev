@@ -14,7 +14,8 @@ after(async () => {
 
 describe('GET em /autores', () => {
   it('Deve retornar uma lista de autores', (done) => {
-    chai.request(app)
+    chai
+      .request(app)
       .get('/autores')
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -28,7 +29,8 @@ describe('GET em /autores', () => {
 
   it('Deve retornar um autor', (done) => {
     const idAutor = 1;
-    chai.request(app)
+    chai
+      .request(app)
       .get(`/autores/${idAutor}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
@@ -42,13 +44,47 @@ describe('GET em /autores', () => {
 
   it('Não deve retornar um autor com id inválido', (done) => {
     const idAutor = 'A';
-    chai.request(app)
+    chai
+      .request(app)
       .get(`/autores/${idAutor}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         expect(res.status).to.equal(404);
-        expect(res.body).to.have.property('message')
+        expect(res.body)
+          .to.have.property('message')
           .eql(`id ${idAutor} não encontrado`);
+        done();
+      });
+  });
+
+  it('Deve retornar uma lista de livros', (done) => {
+    const autorId = 1;
+
+    chai
+      .request(app)
+      .get(`/autores/${autorId}/livros`)
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body).to.have.property('autor');
+        expect(res.body).to.have.property('livros');
+        expect(res.body.livros).to.be.an('array');
+        done();
+      });
+  });
+
+  it('Não deve retornar uma lista de livros com ID inválido', (done) => {
+    const autorId = 'A';
+
+    chai
+      .request(app)
+      .get(`/autores/${autorId}/livros`)
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        expect(res.status).to.equal(404);
+        expect(res.body)
+          .to.have.property('message')
+          .eql(`id ${autorId} não encontrado`);
         done();
       });
   });
@@ -60,27 +96,29 @@ describe('POST em /autores', () => {
       nome: 'Teste Testinho',
       nacionalidade: 'Testelândia',
     };
-    chai.request(app)
+    chai
+      .request(app)
       .post('/autores')
       .set('Accept', 'application/json')
       .send(autor)
       .end((err, res) => {
         expect(res.status).to.equal(201);
-        expect(res.body).to.have.property('message')
-          .eql('autor criado');
+        expect(res.body).to.have.property('message').eql('autor criado');
         done();
       });
   });
 
   it('Não deve criar um autor ao receber body vazio', (done) => {
     const autor = {};
-    chai.request(app)
+    chai
+      .request(app)
       .post('/autores')
       .set('Accept', 'application/json')
       .send(autor)
       .end((err, res) => {
         expect(res.status).to.equal(400);
-        expect(res.body).to.have.property('message')
+        expect(res.body)
+          .to.have.property('message')
           .eql('corpo da requisição vazio');
         done();
       });
@@ -94,7 +132,8 @@ describe('PUT em /autores', () => {
       nome: 'Outro Nome',
       nacionalidade: 'Tangamandápio',
     };
-    chai.request(app)
+    chai
+      .request(app)
       .put(`/autores/${idAutor}`)
       .set('Accept', 'application/json')
       .send(autorAtualizado)
@@ -113,13 +152,15 @@ describe('PUT em /autores', () => {
     const autorAtualizado = {
       name: 'Atualizando Novamente',
     };
-    chai.request(app)
+    chai
+      .request(app)
       .put(`/autores/${idAutor}`)
       .set('Accept', 'application/json')
       .send(autorAtualizado)
       .end((err, res) => {
         expect(res.status).to.equal(404);
-        expect(res.body).to.have.property('message')
+        expect(res.body)
+          .to.have.property('message')
           .eql(`id ${idAutor} não encontrado`);
         done();
       });
@@ -129,25 +170,27 @@ describe('PUT em /autores', () => {
 describe('DELETE em /autores', () => {
   it('Deve deletar um autor', (done) => {
     const idAutor = 4;
-    chai.request(app)
+    chai
+      .request(app)
       .delete(`/autores/${idAutor}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         expect(res.status).to.equal(200);
-        expect(res.body).to.have.property('message')
-          .eql('autor excluído');
+        expect(res.body).to.have.property('message').eql('autor excluído');
         done();
       });
   });
 
   it('Não deve deletar um autor com id inválido', (done) => {
     const idAutor = 'A';
-    chai.request(app)
+    chai
+      .request(app)
       .delete(`/autores/${idAutor}`)
       .set('Accept', 'application/json')
       .end((err, res) => {
         expect(res.status).to.equal(404);
-        expect(res.body).to.have.property('message')
+        expect(res.body)
+          .to.have.property('message')
           .eql(`Autor com id ${idAutor} não encontrado`);
         done();
       });
