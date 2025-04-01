@@ -3,7 +3,7 @@ import {
 } from '@jest/globals';
 import Evento from '../../models/evento.js';
 
-describe('Testando modelo Evento', () => {
+describe('Testando o modelo Evento', () => {
   const objetoEvento = {
     nome: 'Evento teste',
     descricao: 'descrição do evento teste',
@@ -11,7 +11,7 @@ describe('Testando modelo Evento', () => {
     autor_id: 1,
   };
 
-  it('Deve instanciar um novo Evento', () => {
+  it('Deve instanciar um novo evento', () => {
     const evento = new Evento(objetoEvento);
 
     expect(evento).toEqual(

@@ -30,8 +30,8 @@ class LivrosController {
       if (Object.keys(body).length === 0) {
         throw new Error('corpo da requisição vazio');
       }
-      await livro.salvar(livro);
-      return res.status(201).json({ message: 'livro criado' });
+      const resposta = await livro.salvar(livro);
+      return res.status(201).json({ message: 'livro criado', content: resposta });
     } catch (err) {
       if (err.message === 'corpo da requisição vazio') {
         return res.status(400).json({ message: err.message });

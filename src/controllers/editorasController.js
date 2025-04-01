@@ -30,8 +30,8 @@ class EditorasController {
       if (Object.keys(body).length === 0) {
         throw new Error('corpo da requisição vazio');
       }
-      await editora.salvar(editora);
-      return res.status(201).json({ message: 'editora criada' });
+      const resposta = await editora.salvar(editora);
+      return res.status(201).json({ message: 'editora criada', content: resposta });
     } catch (err) {
       if (err.message === 'corpo da requisição vazio') {
         return res.status(400).json({ message: err.message });
