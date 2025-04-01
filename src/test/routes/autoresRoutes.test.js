@@ -96,14 +96,14 @@ describe('POST em /autores', () => {
       nome: 'Teste Testinho',
       nacionalidade: 'Testelândia',
     };
-    chai
-      .request(app)
+    chai.request(app)
       .post('/autores')
       .set('Accept', 'application/json')
       .send(autor)
       .end((err, res) => {
         expect(res.status).to.equal(201);
-        expect(res.body).to.have.property('message').eql('autor criado');
+        expect(res.body).to.have.property('message')
+          .eql('autor criado');
         done();
       });
   });
