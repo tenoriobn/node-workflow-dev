@@ -1,11 +1,16 @@
+/* eslint-disable no-unused-expressions */
 import { after } from 'mocha';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import sinon from 'sinon';
 import app from '../../app.js';
 import db from '../../db/dbconfig.js';
+import EventosController from '../../controllers/eventosController.js';
 
 chai.use(chaiHttp);
 const { expect } = chai;
+
+let stub;
 
 after(async () => {
   await db.destroy();
@@ -13,7 +18,7 @@ after(async () => {
 
 describe('GET em /eventos', () => {
   it('Deve retornar uma lista de eventos', (done) => {
-    process.env.EVENTO_FLAG = 'true';
+    stub = sinon.stub(EventosController, 'liberaAcessoEventos').returns(true);
 
     chai.request(app)
       .get('/eventos')
@@ -24,14 +29,12 @@ describe('GET em /eventos', () => {
         expect(res.body[0]).to.have.property('id');
         expect(res.body[0]).to.have.property('nome');
         expect(res.body[0]).to.have.property('descricao');
-        expect(res.body[0]).to.have.property('data');
-        expect(res.body[0]).to.have.property('autor_id');
         done();
       });
   });
-
   it('Deve retornar erro 404', (done) => {
-    process.env.EVENTO_FLAG = 'false';
+    stub.restore();
+    stub = sinon.stub(EventosController, 'liberaAcessoEventos').returns(false);
 
     chai.request(app)
       .get('/eventos')

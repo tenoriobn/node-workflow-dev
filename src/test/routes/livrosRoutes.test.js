@@ -71,8 +71,12 @@ describe('POST em /livros', () => {
       .send(livro)
       .end((err, res) => {
         expect(res.status).to.equal(201);
-        expect(res.body).to.have.property('message')
-          .eql('livro criado');
+        expect(res.body.content).to.include({
+          titulo: livro.titulo,
+          paginas: livro.paginas,
+          editora_id: livro.editora_id,
+          autor_id: livro.autor_id,
+        });
         done();
       });
   });

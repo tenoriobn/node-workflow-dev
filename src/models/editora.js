@@ -11,7 +11,7 @@ class Editora {
     created_at,
     updated_at,
   }) {
-    this.id = id || null;
+    this.id = null || id;
     this.nome = nome;
     this.cidade = cidade;
     this.email = email;
@@ -29,14 +29,10 @@ class Editora {
   }
 
   async criar() {
-    const novaEditora = {
-      nome: this.nome,
-      cidade: this.cidade,
-      email: this.email,
-      created_at: this.created_at,
-      updated_at: this.updated_at,
-    };
-    return db('editoras').insert(novaEditora);
+    return db('editoras').insert(this)
+      .then((registroCriado) => db('editoras')
+        .where('id', registroCriado[0]))
+      .then((registroSelecionado) => new Editora(registroSelecionado[0]));
   }
 
   async atualizar(id) {

@@ -30,8 +30,8 @@ class AutoresController {
       if (Object.keys(body).length === 0) {
         throw new Error('corpo da requisição vazio');
       }
-      await autor.salvar(autor);
-      return res.status(201).json({ message: 'autor criado' });
+      const resposta = await autor.salvar(autor);
+      return res.status(201).json({ message: 'autor criado', content: resposta });
     } catch (err) {
       if (err.message === 'corpo da requisição vazio') {
         return res.status(400).json({ message: err.message });
@@ -74,9 +74,6 @@ class AutoresController {
     try {
       const listaLivros = await Autor.pegaLivrosPorAutor(params.id);
       const autor = await Autor.pegarPeloId(params.id);
-      if (!autor) {
-        return res.status(404).json({ message: `id ${params.id} não encontrado` });
-      }
       return res.status(200).json({ autor, livros: listaLivros });
     } catch (err) {
       return res.status(500).json(err.message);

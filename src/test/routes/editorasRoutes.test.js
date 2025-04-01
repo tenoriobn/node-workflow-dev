@@ -68,8 +68,10 @@ describe('POST em /editoras', () => {
       .send(editora)
       .end((err, res) => {
         expect(res.status).to.equal(201);
-        expect(res.body).to.have.property('message')
-          .eql('editora criada');
+        expect(res.body.content).to.include({
+          nome: editora.nome,
+          cidade: editora.cidade,
+        });
         done();
       });
   });

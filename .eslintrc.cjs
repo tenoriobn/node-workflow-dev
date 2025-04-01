@@ -3,7 +3,9 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ['airbnb-base'],
+  extends: [
+    'airbnb-base',
+  ],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
@@ -12,11 +14,12 @@ module.exports = {
     'import/extensions': 0,
     'prefer-destructuring': 0,
     'no-underscore-dangle': 0,
-    quotes: ['error', 'single'],
   },
   overrides: [
     {
-      files: ['*.test.js'],
+      files: [
+        '*.test.js',
+      ],
       env: {
         jest: true,
       },

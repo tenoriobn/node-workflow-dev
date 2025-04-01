@@ -12,7 +12,7 @@ class Livro {
     created_at,
     updated_at,
   }) {
-    this.id = id || null;
+    this.id = null || id;
     this.titulo = titulo;
     this.paginas = paginas;
     this.editora_id = editora_id;
@@ -31,15 +31,10 @@ class Livro {
   }
 
   async criar() {
-    const novoLivro = {
-      titulo: this.titulo,
-      paginas: this.paginas,
-      editora_id: this.editora_id,
-      autor_id: this.autor_id,
-      created_at: this.created_at,
-      updated_at: this.updated_at,
-    };
-    return db('livros').insert(novoLivro);
+    return db('livros').insert(this)
+      .then((registroCriado) => db('livros')
+        .where('id', registroCriado[0]))
+      .then((registroSelecionado) => new Livro(registroSelecionado[0]));
   }
 
   async atualizar(id) {
